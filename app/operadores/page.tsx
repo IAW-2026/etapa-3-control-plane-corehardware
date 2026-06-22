@@ -166,6 +166,7 @@ export default async function OperadoresPage({ searchParams }: Props) {
                       operadorId={op.id}
                       nombreCompleto={`${op.nombre} ${op.apellido}`}
                       isDeleted={op.is_deleted}
+                      enviosActivos={op.envios_activos}
                     />
                   </td>
                 </tr>
