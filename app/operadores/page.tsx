@@ -4,6 +4,7 @@ import { callApp } from "@/lib/client";
 import { ListResponse, ShippingOperador } from "@/lib/types";
 import ErrorPanel from "@/components/ErrorPanel";
 import SearchInput from "@/components/SearchInput";
+import ToggleOperador from "./ToggleOperador";
 
 export const dynamic = "force-dynamic";
 
@@ -127,6 +128,7 @@ export default async function OperadoresPage({ searchParams }: Props) {
                 <th className="px-4 py-3">Contacto</th>
                 <th className="px-4 py-3 text-center">Envíos</th>
                 <th className="px-4 py-3 text-center">Estado</th>
+                <th className="px-4 py-3 text-center">Acción</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-800">
@@ -158,6 +160,13 @@ export default async function OperadoresPage({ searchParams }: Props) {
                     }`}>
                       {op.is_deleted ? "Inactivo" : "Activo"}
                     </span>
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    <ToggleOperador
+                      operadorId={op.id}
+                      nombreCompleto={`${op.nombre} ${op.apellido}`}
+                      isDeleted={op.is_deleted}
+                    />
                   </td>
                 </tr>
               ))}
