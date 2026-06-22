@@ -7,6 +7,7 @@ import { UserButton, SignedIn } from "@clerk/nextjs";
 const LINKS = [
   { href: "/", label: "Dashboard" },
   { href: "/usuarios", label: "Usuarios" },
+  { href: "/operadores", label: "Operadores" },
   { href: "/pedidos", label: "Pedidos" },
   { href: "/envios", label: "Envíos" },
   { href: "/pagos", label: "Pagos" },
