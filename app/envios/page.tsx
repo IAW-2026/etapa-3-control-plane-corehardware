@@ -1,10 +1,11 @@
 import { requireAdminPage } from "@/lib/auth";
 import { getApp } from "@/lib/apps";
 import { callApp } from "@/lib/client";
-import { ListResponse, ShippingEnvio } from "@/lib/types";
+import { ListResponse, ShippingEnvio, ShippingOperador } from "@/lib/types";
 import EstadoBadge from "@/components/EstadoBadge";
 import FiltroEstado from "@/components/FiltroEstado";
 import ErrorPanel from "@/components/ErrorPanel";
+import AsignarOperador from "./AsignarOperador";
 
 export const dynamic = "force-dynamic";
 
@@ -19,12 +20,12 @@ export default async function EnviosPage({ searchParams }: Props) {
   const { estado } = await searchParams;
 
   const shipping = getApp("shipping");
-  const res = await callApp<ListResponse<ShippingEnvio>>(
-    shipping,
-    "/api/control-plane/envios"
-  );
+  const [enviosRes, operadoresRes] = await Promise.all([
+    callApp<ListResponse<ShippingEnvio>>(shipping, "/api/control-plane/envios"),
+    callApp<ListResponse<ShippingOperador>>(shipping, "/api/control-plane/operadores"),
+  ]);
 
-  if (!res.ok || !res.data) {
+  if (!enviosRes.ok || !enviosRes.data) {
     return (
       <main className="p-8 max-w-7xl mx-auto">
         <div className="mb-6">
@@ -34,20 +35,26 @@ export default async function EnviosPage({ searchParams }: Props) {
         <ErrorPanel
           app="Shipping App"
           endpoint={`${shipping.url}/api/control-plane/envios`}
-          status={res.status}
-          message={res.error}
+          status={enviosRes.status}
+          message={enviosRes.error}
         />
       </main>
     );
   }
 
+  const operadoresActivos = operadoresRes.ok && operadoresRes.data
+    ? operadoresRes.data.items
+        .filter((o) => !o.is_deleted)
+        .map((o) => ({ id: o.id, label: `${o.apellido}, ${o.nombre}` }))
+    : [];
+
   const envios = estado
-    ? res.data.items.filter((e) => e.estado === estado)
-    : res.data.items;
+    ? enviosRes.data.items.filter((e) => e.estado === estado)
+    : enviosRes.data.items;
 
   const stats = ESTADOS.reduce(
     (acc, e) => {
-      acc[e] = res.data!.items.filter((env) => env.estado === e).length;
+      acc[e] = enviosRes.data!.items.filter((env) => env.estado === e).length;
       return acc;
     },
     {} as Record<string, number>
@@ -60,9 +67,9 @@ export default async function EnviosPage({ searchParams }: Props) {
         <p className="text-gray-400 mt-1">
           Datos provistos por <span className="text-cyan-400">Shipping App</span>
           {" · "}
-          <span className="text-white font-semibold">{res.data.total}</span> envíos totales
+          <span className="text-white font-semibold">{enviosRes.data.total}</span> envíos totales
           {" · "}
-          latencia <span className="font-mono">{res.latencyMs}ms</span>
+          latencia <span className="font-mono">{enviosRes.latencyMs}ms</span>
         </p>
       </div>
 
@@ -91,7 +98,8 @@ export default async function EnviosPage({ searchParams }: Props) {
                 <th className="px-4 py-3">Pedido</th>
                 <th className="px-4 py-3">Estado</th>
                 <th className="px-4 py-3">Dirección</th>
-                <th className="px-4 py-3">Operador</th>
+                <th className="px-4 py-3">Operador asignado</th>
+                <th className="px-4 py-3">Asignar / cambiar</th>
                 <th className="px-4 py-3 text-right">Monto</th>
                 <th className="px-4 py-3">Entrega</th>
               </tr>
@@ -118,6 +126,14 @@ export default async function EnviosPage({ searchParams }: Props) {
                     ) : (
                       <span className="text-gray-500 italic">Sin asignar</span>
                     )}
+                  </td>
+                  <td className="px-4 py-3">
+                    <AsignarOperador
+                      envioId={envio.id}
+                      operadorActual={envio.operador?.id ?? null}
+                      operadores={operadoresActivos}
+                      estado={envio.estado}
+                    />
                   </td>
                   <td className="px-4 py-3 text-right font-mono">
                     ${envio.monto.toLocaleString()}

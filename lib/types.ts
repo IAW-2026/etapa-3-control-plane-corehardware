@@ -30,4 +30,5 @@ export interface ShippingOperador {
   dni: string;
   is_deleted: boolean;
   total_envios: number;
+  envios_activos: number;
 }
