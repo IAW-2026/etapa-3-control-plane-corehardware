@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation'
 import { X } from 'lucide-react'
 import { AppHeader } from '@/components/app-header'
 import { AppSidebar } from '@/components/app-sidebar'
+import { BackgroundGrid } from '@/components/decor/background-grid'
 
-const GRID_SIZE = 40
 
 export default function ProtectedLayout({ children }: { children: ReactNode }) {
     const [mobileNavOpen, setMobileNavOpen] = useState(false)
@@ -61,22 +61,7 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
 
                 {/* Contenido */}
                 <main className="relative flex-1 min-w-0 overflow-y-auto">
-                    <div
-                        className="absolute inset-0 dark:hidden pointer-events-none"
-                        style={{
-                            backgroundImage:
-                                'linear-gradient(to right, #D3D2C9 1px, transparent 1px), linear-gradient(to bottom, #D3D2C9 1px, transparent 1px)',
-                            backgroundSize: `${GRID_SIZE}px ${GRID_SIZE}px`,
-                        }}
-                    />
-                    <div
-                        className="absolute inset-0 hidden dark:block pointer-events-none"
-                        style={{
-                            backgroundImage:
-                                'linear-gradient(to right, #2A2A26 1px, transparent 1px), linear-gradient(to bottom, #2A2A26 1px, transparent 1px)',
-                            backgroundSize: `${GRID_SIZE}px ${GRID_SIZE}px`,
-                        }}
-                    />
+                    <BackgroundGrid />
                     <div className="relative z-10 px-4 sm:px-10 py-8">{children}</div>
                 </main>
             </div>

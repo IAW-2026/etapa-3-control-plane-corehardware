@@ -1,7 +1,7 @@
-import Link from 'next/link'
 import type { ReactNode } from 'react'
+import { BackgroundGrid } from '@/components/decor/background-grid'
+import { CornerMarks } from '@/components/decor/corner-marks'
 
-const GRID_SIZE = 40
 
 export default function MessageScreen({ children }: { children: ReactNode }) {
     return (
@@ -17,36 +17,9 @@ export default function MessageScreen({ children }: { children: ReactNode }) {
 
             {/* Plano */}
             <main className="relative flex-1 flex flex-col justify-center px-6 sm:px-14 py-16 overflow-hidden">
-                {/* grilla */}
-                <div
-                    className="absolute inset-0 dark:hidden"
-                    style={{
-                        backgroundImage:
-                            'linear-gradient(to right, #D3D2C9 1px, transparent 1px), linear-gradient(to bottom, #D3D2C9 1px, transparent 1px)',
-                        backgroundSize: `${GRID_SIZE}px ${GRID_SIZE}px`,
-                    }}
-                />
-                <div
-                    className="absolute inset-0 hidden dark:block"
-                    style={{
-                        backgroundImage:
-                            'linear-gradient(to right, #2A2A26 1px, transparent 1px), linear-gradient(to bottom, #2A2A26 1px, transparent 1px)',
-                        backgroundSize: `${GRID_SIZE}px ${GRID_SIZE}px`,
-                    }}
-                />
-
-                {/* marcas de registro */}
-                {[
-                    'top-3 left-3 sm:top-6 sm:left-6 border-t border-l',
-                    'top-3 right-3 sm:top-6 sm:right-6 border-t border-r',
-                    'bottom-3 left-3 sm:bottom-6 sm:left-6 border-b border-l',
-                    'bottom-3 right-3 sm:bottom-6 sm:right-6 border-b border-r',
-                ].map((pos) => (
-                    <span
-                        key={pos}
-                        className={`absolute w-5 h-5 sm:w-6 sm:h-6 border-[#6B6D64] dark:border-[#8C8E82] ${pos}`}
-                    />
-                ))}
+                {/* fondo */}
+                <BackgroundGrid />
+                <CornerMarks />
 
                 {/* panel central */}
                 <div className="relative z-10 w-full">{children}</div>

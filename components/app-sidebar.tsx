@@ -10,6 +10,7 @@ import {
     Truck,
 } from 'lucide-react'
 
+
 const NAV_ITEMS = [
     { href: '/home', label: 'Inicio', icon: LayoutDashboard },
     { href: '/buyer', label: 'Comprador', icon: ShoppingCart },
@@ -17,6 +18,7 @@ const NAV_ITEMS = [
     { href: '/payments', label: 'Pagos', icon: CreditCard },
     { href: '/shipping', label: 'Envíos', icon: Truck },
 ] as const
+
 
 export function AppSidebar({ onNavigate }: { onNavigate?: () => void }) {
     const pathname = usePathname()
