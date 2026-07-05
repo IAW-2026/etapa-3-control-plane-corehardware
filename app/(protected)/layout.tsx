@@ -12,12 +12,12 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
     const [mobileNavOpen, setMobileNavOpen] = useState(false)
     const pathname = usePathname()
 
-    // Cierra el drawer al navegar
-    useEffect(() => {
-        setMobileNavOpen(false)
-    }, [pathname])
+    const [prevPathname, setPrevPathname] = useState(pathname)
+    if (pathname !== prevPathname) {
+        setPrevPathname(pathname)
+        if (mobileNavOpen) setMobileNavOpen(false)
+    }
 
-    // Cierra el drawer con Escape
     useEffect(() => {
         if (!mobileNavOpen) return
         const handleKey = (e: KeyboardEvent) => {
