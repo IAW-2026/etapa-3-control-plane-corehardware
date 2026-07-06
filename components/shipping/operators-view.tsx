@@ -37,7 +37,7 @@ export function OperatorsView({ operators, search, page, totalPages }: Operators
             <PageHeader
                 breadcrumb="Envíos / Operadores"
                 title="Operadores"
-                linkLabel="Ver en Dashboard"
+                linkLabel="Ver usuarios en Dashboard"
                 href={process.env.NEXT_PUBLIC_ANALYTICS_APP_URL! + "/usuarios"}
             />
 

@@ -2,6 +2,9 @@
 
 import { useState } from 'react'
 import type { Operator } from '@/types/shipping'
+import { shortId } from '@/lib/format'
+import { Field } from '@/components/ui/field'
+import { IdentityTag } from '../ui/identity-tag'
 
 interface EditOperatorModalProps {
     operator: Operator
@@ -27,14 +30,17 @@ export function EditOperatorModal({ operator, onCancel, onConfirm }: EditOperato
             <div className="relative w-full max-w-lg border border-[#1A1A18] dark:border-[#EDECE6] bg-[#EBEAE3] dark:bg-[#141412] font-mono max-h-[90vh] overflow-y-auto">
                 <div className="px-6 py-4 border-b border-[#D3D2C9] dark:border-[#2A2A26]">
                     <span className="text-[10px] uppercase tracking-[0.2em] text-[#5C5E56] dark:text-[#8C8E82]">
-                        Operador / {operator.dni}
+                        Operador / {shortId(operator.id)}
                     </span>
                     <h2 className="text-lg font-semibold uppercase tracking-tight mt-1">
-                        Editar operador
+                        Editar datos
                     </h2>
                 </div>
 
                 <div className="px-6 py-5 space-y-4">
+
+                    <IdentityTag label="DNI" value={operator.dni} />
+
                     <div className="grid grid-cols-2 gap-3">
                         <Field label="Nombre">
                             <input
@@ -111,6 +117,12 @@ export function EditOperatorModal({ operator, onCancel, onConfirm }: EditOperato
                             </select>
                         </Field>
                     </div>
+
+                    {hasChanged && (
+                        <p className="text-xs leading-relaxed text-[#5C5E56] dark:text-[#8C8E82] border-l-2 border-[#C1440E] dark:border-[#E0662B] pl-3">
+                            Confirmá que estos cambios corresponden a este operador antes de continuar.
+                        </p>
+                    )}
                 </div>
 
                 <div className="px-6 py-4 border-t border-[#D3D2C9] dark:border-[#2A2A26] flex justify-end gap-3">
@@ -131,17 +143,6 @@ export function EditOperatorModal({ operator, onCancel, onConfirm }: EditOperato
                     </button>
                 </div>
             </div>
-        </div>
-    )
-}
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-    return (
-        <div className="space-y-1.5">
-            <label className="block text-xs uppercase tracking-wide text-[#5C5E56] dark:text-[#8C8E82]">
-                {label}
-            </label>
-            {children}
         </div>
     )
 }
