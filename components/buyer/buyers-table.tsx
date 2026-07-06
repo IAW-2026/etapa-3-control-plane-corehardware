@@ -1,15 +1,15 @@
 'use client'
 
 import { Pencil } from 'lucide-react'
-import type { Operator } from '@/types/shipping'
+import type { Buyer } from '@/types/buyer'
 import { shortId } from '@/lib/format'
 
-interface OperatorTableProps {
-    items: Operator[]
-    onEdit: (operator: Operator) => void
+interface BuyersTableProps {
+    items: Buyer[]
+    onEdit: (buyer: Buyer) => void
 }
 
-export function OperatorTable({ items, onEdit }: OperatorTableProps) {
+export function BuyersTable({ items, onEdit }: BuyersTableProps) {
     return (
         <div className="hidden lg:block overflow-x-auto">
             <table className="w-full text-sm">
@@ -33,28 +33,28 @@ export function OperatorTable({ items, onEdit }: OperatorTableProps) {
                     </tr>
                 </thead>
                 <tbody>
-                    {items.map((operator) => (
+                    {items.map((buyer) => (
                         <tr
-                            key={operator.id}
+                            key={buyer.id}
                             className="border-b border-[#D3D2C9] dark:border-[#2A2A26] last:border-b-0 align-top"
                         >
                             <td className="px-4 py-3 font-mono text-xs whitespace-nowrap">
-                                <span title={operator.id}>{shortId(operator.id)}</span>
+                                <span title={buyer.id}>{shortId(buyer.id)}</span>
                             </td>
                             <td className="px-4 py-3 text-xs whitespace-nowrap">
-                                {operator.dni}
+                                {buyer.dni}
                             </td>
                             <td className="px-4 py-3 text-xs">
-                                {operator.apellido}, {operator.nombre}
+                                {buyer.apellido}, {buyer.nombre}
                             </td>
                             <td className="px-4 py-3 text-xs text-[#5C5E56] dark:text-[#8C8E82]">
-                                <div>{operator.mail}</div>
-                                <div>{operator.celular}</div>
+                                <div>{buyer.mail}</div>
+                                <div>{buyer.celular}</div>
                             </td>
                             <td className="px-4 py-3 text-right whitespace-nowrap">
                                 <button
                                     type="button"
-                                    onClick={() => onEdit(operator)}
+                                    onClick={() => onEdit(buyer)}
                                     className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] uppercase tracking-[0.15em] border border-[#1A1A18] dark:border-[#EDECE6] hover:border-[#C1440E] hover:text-[#C1440E] dark:hover:border-[#E0662B] dark:hover:text-[#E0662B] transition-colors"
                                 >
                                     <Pencil className="w-3 h-3" />
