@@ -17,9 +17,6 @@ export function DisputeFilters({
     onStatusFilterChange,
 }: DisputeFiltersProps) {
     return (
-        // El corte a fila se hace en lg (no sm): en anchos intermedios, compartir
-        // fila con los botones de estado hacía que el buscador (flex-1) se
-        // achicara casi a desaparecer. Antes de lg, todo apilado full-width.
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
             <div className="relative w-full lg:w-72 lg:flex-shrink-0">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B6D64] dark:text-[#8C8E82]" />

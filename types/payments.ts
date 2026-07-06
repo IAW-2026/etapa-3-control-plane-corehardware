@@ -15,7 +15,7 @@ export const DISPUTE_STATUSES: DisputeStatus[] = ['pendiente', 'repuesta', 'reem
 
 export const STATUS_LABELS: Record<DisputeStatus, string> = {
     pendiente: 'Pendiente',
-    repuesta: 'Respondida',
+    repuesta: 'Repuesta',
     reembolsada: 'Reembolsada',
     rechazada: 'Rechazada',
 }
