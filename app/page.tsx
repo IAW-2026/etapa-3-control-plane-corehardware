@@ -3,8 +3,10 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import { BackgroundGrid } from '@/components/decor/background-grid'
+import { CornerMarks } from '@/components/decor/corner-marks'
+import { AppFooter } from '@/components/app-footer'
 
-const GRID_SIZE = 40
 
 export default function LandingPage() {
     const [mounted, setMounted] = useState(false)
@@ -55,38 +57,11 @@ export default function LandingPage() {
                 ref={mainRef}
                 className="relative flex-1 flex flex-col justify-center px-6 sm:px-14 py-16 overflow-hidden cursor-none"
             >
-                {/* grilla */}
-                <div
-                    className="absolute inset-0 dark:hidden"
-                    style={{
-                        backgroundImage:
-                            'linear-gradient(to right, #D3D2C9 1px, transparent 1px), linear-gradient(to bottom, #D3D2C9 1px, transparent 1px)',
-                        backgroundSize: `${GRID_SIZE}px ${GRID_SIZE}px`,
-                    }}
-                />
-                <div
-                    className="absolute inset-0 hidden dark:block"
-                    style={{
-                        backgroundImage:
-                            'linear-gradient(to right, #2A2A26 1px, transparent 1px), linear-gradient(to bottom, #2A2A26 1px, transparent 1px)',
-                        backgroundSize: `${GRID_SIZE}px ${GRID_SIZE}px`,
-                    }}
-                />
+                {/* Fondo */}
+                <BackgroundGrid />
+                <CornerMarks />
 
-                {/* marcas de registro */}
-                {[
-                    'top-3 left-3 sm:top-6 sm:left-6 border-t border-l',
-                    'top-3 right-3 sm:top-6 sm:right-6 border-t border-r',
-                    'bottom-3 left-3 sm:bottom-6 sm:left-6 border-b border-l',
-                    'bottom-3 right-3 sm:bottom-6 sm:right-6 border-b border-r',
-                ].map((pos) => (
-                    <span
-                        key={pos}
-                        className={`absolute w-5 h-5 sm:w-6 sm:h-6 border-[#6B6D64] dark:border-[#8C8E82] ${pos}`}
-                    />
-                ))}
-
-                {/* guías del cursor: cruz que atraviesa el plano + coordenadas reales */}
+                {/* guías del cursor */}
                 {pointer && (
                     <>
                         <div
@@ -170,15 +145,7 @@ export default function LandingPage() {
                 </div>
             </main>
 
-            {/* Footer */}
-            <footer className="px-4 sm:px-10 py-6 border-t border-[#D3D2C9] dark:border-[#2A2A26] flex flex-col sm:flex-row items-center justify-between gap-2 shrink-0 text-center sm:text-left z-20 relative bg-[#EBEAE3] dark:bg-[#141412]">
-                <span className="flex items-baseline gap-2 text-xs text-[#5C5E56] dark:text-[#8C8E82]">
-                    <span>CoreHardware</span>
-                    <span aria-hidden="true">·</span>
-                    <span>Control Plane</span>
-                </span>
-                <span className="text-xs text-[#5C5E56] dark:text-[#8C8E82]">© {new Date().getFullYear()}</span>
-            </footer>
+            <AppFooter />
         </div>
     )
 }
