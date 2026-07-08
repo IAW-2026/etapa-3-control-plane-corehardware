@@ -15,3 +15,8 @@ export interface Buyer {
     isDeleted: Boolean
     perfilCompleto: Boolean
 }
+
+export type BuyerUpdatableFields = Pick<
+    Buyer,
+    'nombre' | 'apellido' | 'sexo' | 'direccion' | 'mail' | 'celular' | 'condicionIva'
+>
