@@ -9,6 +9,7 @@ import { DisputesTable } from './disputes-table'
 import { Pagination } from '../ui/pagination'
 import type { Dispute, DisputeStatus } from '@/types/payments'
 import { PageHeader } from '../ui/page-header'
+import { updateDisputeStatus } from '@/actions/payments'
 
 interface DisputesViewProps {
     disputes: Dispute[]
@@ -27,19 +28,35 @@ export function DisputesView({ disputes, search, statusFilter, page, totalPages 
     })
 
     const [editingDispute, setEditingDispute] = useState<Dispute | null>(null)
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const [isSuccess, setIsSuccess] = useState(false)
 
     function handleStatusFilterChange(status: DisputeStatus | 'all') {
         updateParams({ estado: status === 'all' ? null : status, page: null })
     }
 
-    function handleConfirm(newStatus: DisputeStatus) {
-        if (!editingDispute) return
-        setItems((prev) =>
-            prev.map((dispute) =>
-                dispute.id === editingDispute.id ? { ...dispute, estado: newStatus } : dispute
-            )
-        )
+    function handleCancel() {
         setEditingDispute(null)
+        setError(null)
+        setIsSuccess(false)
+    }
+
+    async function handleConfirm(newStatus: DisputeStatus) {
+        if (!editingDispute) return
+        setIsSubmitting(true)
+        setError(null)
+        try {
+            const updated = await updateDisputeStatus(editingDispute.id, newStatus)
+            setItems((prev) =>
+                prev.map((dispute) => (dispute.id === updated.id ? updated : dispute))
+            )
+            setIsSubmitting(false)
+            setIsSuccess(true)
+        } catch {
+            setError('No se pudo actualizar el estado. Intentá de nuevo.')
+            setIsSubmitting(false)
+        }
     }
 
     return (
@@ -76,8 +93,11 @@ export function DisputesView({ disputes, search, statusFilter, page, totalPages 
             {editingDispute && (
                 <EditStatusModal
                     dispute={editingDispute}
-                    onCancel={() => setEditingDispute(null)}
+                    onCancel={handleCancel}
                     onConfirm={handleConfirm}
+                    isSubmitting={isSubmitting}
+                    error={error}
+                    isSuccess={isSuccess}
                 />
             )}
         </div>
