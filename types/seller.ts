@@ -1,12 +1,11 @@
 export interface Seller {
     id: string
     cuit: string
-    name: string
-    address: string
-    email: string
-    phoneNumber: string
-    startOfActivities: string
-    VATCondition: string
-    clerkUserId: string | null
-    isDeleted: boolean
+    razon_social: string
+    direccion: string
+    mail: string
+    celular: string
+    condicion_iva: string
 }
+
+export type SellerUpdatableFields = Pick<Seller, 'razon_social' | 'direccion' | 'mail' | 'celular' | 'condicion_iva'>

@@ -28,7 +28,7 @@ export function SellerMobileList({ items, onEdit }: SellerMobileListProps) {
                         <span className="block text-[10px] uppercase tracking-[0.15em] text-[#5C5E56] dark:text-[#8C8E82] mb-1">
                             Nombre
                         </span>
-                        {seller.name}
+                        {seller.razon_social}
                     </div>
 
                     <div>
@@ -36,8 +36,8 @@ export function SellerMobileList({ items, onEdit }: SellerMobileListProps) {
                             Contacto
                         </span>
                         <div className="text-xs text-[#5C5E56] dark:text-[#8C8E82]">
-                            <div>{seller.email}</div>
-                            <div>{seller.phoneNumber}</div>
+                            <div>{seller.mail}</div>
+                            <div>{seller.celular}</div>
                         </div>
                     </div>
 

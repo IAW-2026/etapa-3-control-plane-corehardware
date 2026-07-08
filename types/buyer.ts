@@ -8,12 +8,7 @@ export interface Buyer {
     direccion: string
     mail: string
     celular: string
-    fechaNacimiento: string
-    nacionalidad: string
     condicionIva: string
-    clerkUserId: string
-    isDeleted: Boolean
-    perfilCompleto: Boolean
 }
 
 export type BuyerUpdatableFields = Pick<
