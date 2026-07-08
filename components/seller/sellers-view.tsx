@@ -7,8 +7,9 @@ import { SellerFilters } from './seller-filters'
 import { SellerMobileList } from './seller-mobile-list'
 import { SellersTable } from './sellers-table'
 import { Pagination } from '../ui/pagination'
-import type { Seller } from '@/types/seller'
+import type { Seller, SellerUpdatableFields } from '@/types/seller'
 import { PageHeader } from '../ui/page-header'
+import { updateSeller } from '@/actions/seller'
 
 interface SellersViewProps {
     sellers: Seller[]
@@ -26,11 +27,30 @@ export function SellersView({ sellers, search, page, totalPages }: SellersViewPr
     })
 
     const [editingSeller, setEditingSeller] = useState<Seller | null>(null)
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const [isSuccess, setIsSuccess] = useState(false)
 
-    function handleConfirm(updated: Seller) {
-            setItems((prev) => prev.map((op) => (op.id === updated.id ? updated : op)))
-            setEditingSeller(null)
+    function handleCancel() {
+        setEditingSeller(null)
+        setError(null)
+        setIsSuccess(false)
+    }
+
+    async function handleConfirm(changes: Partial<SellerUpdatableFields>) {
+        if (!editingSeller) return
+        setIsSubmitting(true)
+        setError(null)
+        try {
+            const updated = await updateSeller(editingSeller.id, changes)
+            setItems((prev) => prev.map((seller) => (seller.id === updated.id ? updated : seller)))
+            setIsSubmitting(false)
+            setIsSuccess(true)
+        } catch {
+            setError('No se pudo actualizar el vendedor. Intentá de nuevo.')
+            setIsSubmitting(false)
         }
+    }
 
     return (
         <div className="space-y-6">
@@ -61,8 +81,11 @@ export function SellersView({ sellers, search, page, totalPages }: SellersViewPr
             {editingSeller && (
                 <EditSellerModal
                     seller={editingSeller}
-                    onCancel={() => setEditingSeller(null)}
+                    onCancel={handleCancel}
                     onConfirm={handleConfirm}
+                    isSubmitting={isSubmitting}
+                    error={error}
+                    isSuccess={isSuccess}
                 />
             )}
         </div>

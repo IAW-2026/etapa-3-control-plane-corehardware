@@ -14,6 +14,24 @@ const UPDATABLE_FIELD_TO_API_PARAM: Record<keyof BuyerUpdatableFields, string> =
 }
 
 
+interface ApiBuyer {
+    id: string
+    dni: string
+    cuil_cuit: string
+    apellido: string
+    nombre: string
+    sexo: string
+    direccion: string
+    mail: string
+    celular: string
+    condicion_iva: string
+}
+
+function apiBuyerToBuyer({ cuil_cuit, condicion_iva, ...rest }: ApiBuyer): Buyer {
+    return { ...rest, cuilCuit: cuil_cuit, condicionIva: condicion_iva }
+}
+
+
 interface GetBuyersResult {
     buyers: Buyer[]
     total: number
@@ -43,7 +61,19 @@ export async function getBuyers(
         throw new Error(`Error al obtener compradores: ${response.status} ${response.statusText}`)
     }
 
-    return (await response.json()) as GetBuyersResult
+    const raw = (await response.json()) as {
+        buyers: ApiBuyer[]
+        total: number
+        offset: number
+        limit: number
+    }
+
+    return {
+        buyers: raw.buyers.map(apiBuyerToBuyer),
+        total: raw.total,
+        offset: raw.offset,
+        limit: raw.limit,
+    }
 }
 
 
@@ -80,5 +110,5 @@ export async function updateBuyer(id: string, data: Partial<BuyerUpdatableFields
         throw new Error(`Error al actualizar el comprador: ${response.status} ${response.statusText}`)
     }
 
-    return (await response.json()) as Buyer
+    return apiBuyerToBuyer((await response.json()) as ApiBuyer)
 }

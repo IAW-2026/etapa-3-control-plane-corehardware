@@ -45,11 +45,11 @@ export function SellersTable({ items, onEdit }: SellersTableProps) {
                                 {seller.cuit}
                             </td>
                             <td className="px-4 py-3 text-xs">
-                                {seller.name}
+                                {seller.razon_social}
                             </td>
                             <td className="px-4 py-3 text-xs text-[#5C5E56] dark:text-[#8C8E82]">
-                                <div>{seller.email}</div>
-                                <div>{seller.phoneNumber}</div>
+                                <div>{seller.mail}</div>
+                                <div>{seller.celular}</div>
                             </td>
                             <td className="px-4 py-3 text-right whitespace-nowrap">
                                 <button
