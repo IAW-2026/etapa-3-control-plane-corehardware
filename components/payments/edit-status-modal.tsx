@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { StatusBadge } from './status-badge'
+import { Select } from '@/components/ui/select'
 import { DISPUTE_STATUSES, STATUS_LABELS, type Dispute, type DisputeStatus } from '@/types/payments'
 import { shortId } from '@/lib/format'
 
@@ -40,7 +41,7 @@ export function EditStatusModal({
             <div className="relative w-full max-w-md border border-[#1A1A18] dark:border-[#EDECE6] bg-[#EBEAE3] dark:bg-[#141412] font-mono">
                 <div className="px-6 py-4 border-b border-[#D3D2C9] dark:border-[#2A2A26]">
                     <span className="text-[10px] uppercase tracking-[0.2em] text-[#5C5E56] dark:text-[#8C8E82]">
-                        Disputa /{shortId(dispute.id)}
+                        Disputa / {shortId(dispute.id)}
                     </span>
                     <h2 className="text-lg font-semibold uppercase tracking-tight mt-1">Cambiar estado</h2>
                 </div>
@@ -54,29 +55,19 @@ export function EditStatusModal({
                     </div>
 
                     <div className="space-y-1.5">
-                        <label
-                            htmlFor="new-status"
-                            className="block text-xs uppercase tracking-wide text-[#5C5E56] dark:text-[#8C8E82]"
-                        >
+                        <span className="block text-xs uppercase tracking-wide text-[#5C5E56] dark:text-[#8C8E82]">
                             Nuevo estado
-                        </label>
-                        <select
-                            id="new-status"
+                        </span>
+                        <Select
                             value={newStatus}
+                            onChange={(value) => setNewStatus(value as DisputeStatus)}
+                            options={availableStatuses.map((status) => ({
+                                value: status,
+                                label: STATUS_LABELS[status],
+                            }))}
                             disabled={isSubmitting || isSuccess}
-                            onChange={(e) => setNewStatus(e.target.value as DisputeStatus)}
-                            className="w-full border border-[#D3D2C9] dark:border-[#2A2A26] bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-[#C1440E] dark:focus:border-[#E0662B] disabled:opacity-50"
-                        >
-                            {availableStatuses.map((status) => (
-                                <option
-                                    key={status}
-                                    value={status}
-                                    className="bg-[#EBEAE3] dark:bg-[#141412]"
-                                >
-                                    {STATUS_LABELS[status]}
-                                </option>
-                            ))}
-                        </select>
+                            ariaLabel="Nuevo estado"
+                        />
                     </div>
 
                     <div className="space-y-1.5">
@@ -88,7 +79,7 @@ export function EditStatusModal({
                         </p>
                     </div>
 
-                    {hasChanged && !error && (
+                    {hasChanged && !error && !isSuccess && (
                         <p className="text-xs leading-relaxed text-[#5C5E56] dark:text-[#8C8E82] border-l-2 border-[#C1440E] dark:border-[#E0662B] pl-3">
                             El control plane es para resolver casos excepcionales. Confirmá que
                             este cambio corresponde a esta disputa antes de continuar.

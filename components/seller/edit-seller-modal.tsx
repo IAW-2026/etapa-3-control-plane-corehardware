@@ -4,6 +4,7 @@ import { useState } from 'react'
 import type { Seller, SellerUpdatableFields } from '@/types/seller'
 import { shortId } from '@/lib/format'
 import { Field } from '@/components/ui/field'
+import { IdentityTag } from '../ui/identity-tag'
 
 interface EditSellerModalProps {
     seller: Seller
@@ -64,12 +65,8 @@ export function EditSellerModal({
                 </div>
 
                 <div className="px-6 py-5 space-y-4">
-                    <div className="flex items-center justify-between gap-3">
-                        <span className="text-xs uppercase tracking-wide text-[#5C5E56] dark:text-[#8C8E82]">
-                            CUIT
-                        </span>
-                        <span className="text-sm">{seller.cuit}</span>
-                    </div>
+
+                    <IdentityTag label="CUIT" value={seller.cuit} />
 
                     <Field label="Nombre">
                         <input
@@ -91,25 +88,26 @@ export function EditSellerModal({
                         />
                     </Field>
 
-                    <Field label="Email">
-                        <input
-                            type="email"
-                            value={form.mail}
-                            disabled={isSubmitting || isSuccess}
-                            onChange={(e) => update('mail', e.target.value)}
-                            className="w-full border border-[#D3D2C9] dark:border-[#2A2A26] bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-[#C1440E] dark:focus:border-[#E0662B] disabled:opacity-50"
-                        />
-                    </Field>
-
-                    <Field label="Teléfono">
-                        <input
-                            type="tel"
-                            value={form.celular}
-                            disabled={isSubmitting || isSuccess}
-                            onChange={(e) => update('celular', e.target.value)}
-                            className="w-full border border-[#D3D2C9] dark:border-[#2A2A26] bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-[#C1440E] dark:focus:border-[#E0662B] disabled:opacity-50"
-                        />
-                    </Field>
+                    <div className="grid grid-cols-2 gap-3">
+                        <Field label="Mail">
+                            <input
+                                type="email"
+                                value={form.mail}
+                                disabled={isSubmitting || isSuccess}
+                                onChange={(e) => update('mail', e.target.value)}
+                                className="w-full border border-[#D3D2C9] dark:border-[#2A2A26] bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-[#C1440E] dark:focus:border-[#E0662B] disabled:opacity-50"
+                            />
+                        </Field>
+                        <Field label="Celular">
+                            <input
+                                type="tel"
+                                value={form.celular}
+                                disabled={isSubmitting || isSuccess}
+                                onChange={(e) => update('celular', e.target.value)}
+                                className="w-full border border-[#D3D2C9] dark:border-[#2A2A26] bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-[#C1440E] dark:focus:border-[#E0662B] disabled:opacity-50"
+                            />
+                        </Field>
+                    </div>
 
                     <Field label="Condición IVA">
                         <input

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import type { Operator, OperatorUpdatableFields } from '@/types/shipping'
 import { shortId } from '@/lib/format'
 import { Field } from '@/components/ui/field'
+import { Select } from '@/components/ui/select'
 import { IdentityTag } from '../ui/identity-tag'
 
 interface EditOperatorModalProps {
@@ -131,15 +132,12 @@ export function EditOperatorModal({
                     </div>
 
                     <Field label="Sexo">
-                        <select
+                        <Select
                             value={form.sexo}
+                            onChange={(value) => update('sexo', value)}
+                            options={['M', 'F']}
                             disabled={isSubmitting || isSuccess}
-                            onChange={(e) => update('sexo', e.target.value)}
-                            className="w-full border border-[#D3D2C9] dark:border-[#2A2A26] bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-[#C1440E] dark:focus:border-[#E0662B] disabled:opacity-50"
-                        >
-                            <option value="M" className="bg-[#EBEAE3] dark:bg-[#141412]">M</option>
-                            <option value="F" className="bg-[#EBEAE3] dark:bg-[#141412]">F</option>
-                        </select>
+                        />
                     </Field>
 
                     {hasChanged && !error && !isSuccess && (
