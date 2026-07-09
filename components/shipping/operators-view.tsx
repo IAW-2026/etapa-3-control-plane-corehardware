@@ -7,8 +7,9 @@ import { OperatorMobileList } from './operator-mobile-list'
 import { OperatorTable } from './operators-table'
 import { EditOperatorModal } from './edit-operator-modal'
 import { Pagination } from '@/components/ui/pagination'
-import type { Operator } from '@/types/shipping'
+import type { Operator, OperatorUpdatableFields } from '@/types/shipping'
 import { PageHeader } from '../ui/page-header'
+import { updateOperator } from '@/actions/shipping'
 
 interface OperatorsViewProps {
     operators: Operator[]
@@ -26,10 +27,29 @@ export function OperatorsView({ operators, search, page, totalPages }: Operators
     })
 
     const [editingOperator, setEditingOperator] = useState<Operator | null>(null)
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const [isSuccess, setIsSuccess] = useState(false)
 
-    function handleConfirm(updated: Operator) {
-        setItems((prev) => prev.map((op) => (op.id === updated.id ? updated : op)))
+    function handleCancel() {
         setEditingOperator(null)
+        setError(null)
+        setIsSuccess(false)
+    }
+
+    async function handleConfirm(changes: Partial<OperatorUpdatableFields>) {
+        if (!editingOperator) return
+        setIsSubmitting(true)
+        setError(null)
+        try {
+            const updated = await updateOperator(editingOperator.id, changes)
+            setItems((prev) => prev.map((op) => (op.id === updated.id ? updated : op)))
+            setIsSubmitting(false)
+            setIsSuccess(true)
+        } catch {
+            setError('No se pudo actualizar el operador. Intentá de nuevo.')
+            setIsSubmitting(false)
+        }
     }
 
     return (
@@ -61,8 +81,11 @@ export function OperatorsView({ operators, search, page, totalPages }: Operators
             {editingOperator && (
                 <EditOperatorModal
                     operator={editingOperator}
-                    onCancel={() => setEditingOperator(null)}
+                    onCancel={handleCancel}
                     onConfirm={handleConfirm}
+                    isSubmitting={isSubmitting}
+                    error={error}
+                    isSuccess={isSuccess}
                 />
             )}
         </div>
