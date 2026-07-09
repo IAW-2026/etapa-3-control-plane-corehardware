@@ -1,5 +1,6 @@
 'use server'
 
+import { CACHE_TIME } from '@/lib/constants'
 import { type Operator, type OperatorUpdatableFields } from '@/types/shipping'
 
 
@@ -51,7 +52,7 @@ export async function getOperators(
 
     const response = await fetch(url, {
         headers: { 'X-API-Key': process.env.SHIPPING_API_KEY! },
-        cache: 'no-store',
+        next: { revalidate: CACHE_TIME },
     })
 
     if (!response.ok) {

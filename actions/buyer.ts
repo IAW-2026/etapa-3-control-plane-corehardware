@@ -1,5 +1,6 @@
 'use server'
 
+import { CACHE_TIME } from '@/lib/constants'
 import { type Buyer, type BuyerUpdatableFields } from '@/types/buyer'
 
 
@@ -54,7 +55,7 @@ export async function getBuyers(
 
     const response = await fetch(url, {
         headers: { 'X-API-Key': process.env.BUYER_API_KEY! },
-        cache: 'no-store',
+        next: { revalidate: CACHE_TIME },
     })
 
     if (!response.ok) {

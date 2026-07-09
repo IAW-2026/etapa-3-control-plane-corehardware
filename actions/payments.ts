@@ -1,5 +1,6 @@
 'use server'
 
+import { CACHE_TIME } from '@/lib/constants'
 import { type Dispute, type DisputeStatus } from '@/types/payments'
 
 
@@ -35,7 +36,7 @@ export async function getDisputes(
 
     const response = await fetch(url, {
         headers: { 'X-API-Key': process.env.PAYMENTS_API_KEY ?? '' },
-        cache: 'no-store',
+        next: { revalidate: CACHE_TIME },
     })
 
     if (!response.ok) {

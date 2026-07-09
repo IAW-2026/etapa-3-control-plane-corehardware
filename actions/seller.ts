@@ -1,5 +1,6 @@
 'use server'
 
+import { CACHE_TIME } from '@/lib/constants'
 import { type Seller, type SellerUpdatableFields } from '@/types/seller'
 
 const UPDATABLE_FIELD_TO_API_PARAM: Record<keyof SellerUpdatableFields, string> = {
@@ -31,7 +32,7 @@ export async function getSellers(
 
     const response = await fetch(url, {
         headers: { 'X-API-Key': process.env.SELLER_API_KEY! },
-        cache: 'no-store',
+        next: { revalidate: CACHE_TIME },
     })
 
     if (!response.ok) {
