@@ -13,25 +13,25 @@ const governedApps: GovernedApp[] = [
     {
         name: 'Buyer',
         description: 'Pedidos y seguimiento para compradores.',
-        href: process.env.NEXT_PUBLIC_BUYER_APP_URL ?? '#',
+        href: process.env.BUYER_APP_URL ?? '#',
         accent: '#0891B2',
     },
     {
         name: 'Seller',
         description: 'Publicación de productos y revisión de ventas.',
-        href: process.env.NEXT_PUBLIC_SELLER_APP_URL ?? '#',
+        href: process.env.SELLER_APP_URL ?? '#',
         accent: '#0891B2',
     },
     {
         name: 'Payments',
         description: 'Procesamiento de pagos y disputas.',
-        href: process.env.NEXT_PUBLIC_PAYMENTS_APP_URL ?? '#',
+        href: process.env.PAYMENTS_APP_URL ?? '#',
         accent: '#16A34A',
     },
     {
         name: 'Shipping',
         description: 'Asignación de envíos a operadores y actualización de estados.',
-        href: process.env.NEXT_PUBLIC_SHIPPING_APP_URL ?? '#',
+        href: process.env.SHIPPING_APP_URL ?? '#',
         accent: '#0891B2',
     },
 ]
