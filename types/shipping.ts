@@ -1,6 +1,5 @@
 export interface Operator {
     id: string
-    clerkUserId: string
     dni: string
     cuilCuit: string
     apellido: string
@@ -9,7 +8,9 @@ export interface Operator {
     direccion: string
     mail: string
     celular: string
-    fechaNacimiento: string
-    nacionalidad: string
-    isDeleted: boolean
 }
+
+export type OperatorUpdatableFields = Pick<
+    Operator,
+    'nombre' | 'apellido' | 'sexo' | 'direccion' | 'mail' | 'celular'
+>
