@@ -22,16 +22,17 @@ No tiene base de datos propia: todos los datos vienen de las APIs de las otras a
 ## Estructura del proyecto
 
 ```
-app/                 → páginas Next.js
-  ├ page.tsx         → Dashboard global (health checks + KPIs)
-  ├ usuarios/        → vista unificada de usuarios
-  ├ pedidos/         → consume Buyer
-  ├ envios/          → consume Shipping
-  ├ pagos/           → consume Payments
-  └ disputas/        → consume Payments
-  (obsoleto, a determinar)
-components/          → React components
-proxy.ts        → bloquea acceso sin rol admin
+app/                    → Páginas Next.js
+  ├ (auth)              → Página de login
+  └ (protected)
+      ├ page.tsx        → Landing Page
+      ├ buyer/          → Consume Buyer
+      ├ home/           → Mapa del ecosistema CoreHardware
+      ├ payments/       → Consume Payments
+      ├ seller/         → Consume Seller
+      └ shipping/       → Consume Shipping
+components/             → React components
+proxy.ts                → bloquea acceso sin rol admin
 ```
 
 ---
@@ -73,14 +74,13 @@ proxy.ts        → bloquea acceso sin rol admin
 
 ## Integraciones
 
-| App | Endpoint consumido | Estado |
-|-----|-------------------|--------|
-| Buyer | `/api/admin/buyers`, `/api/admin/orders`, `/api/admin/orders/stats` | ⚠️ Hay que agregar auth dual (Clerk + API Key) |
-| Seller | `/api/admin/sellers` | ❌ Aún no expuesto |
-| Shipping | `/api/admin/envios`, `/api/admin/operadores`, `/api/health`, `/api/admin/stats/*` | ✅ Ya disponible |
-| Payments | `/api/admin/pagos`, `/api/admin/disputas` | ❌ Aún no expuesto |
+| App | Endpoint consumido |
+|-----|-------------------|
+| Buyer | `/api/buyers/paginated`, `/api/buyers/[id]` |
+| Seller | `/api/sellers/paginated`, `/api/sellers/[id]` |
+| Shipping | `/api/operadores`, `/api/operadores/[id]` |
+| Payments | `/api/disputes`, `/api/disputes/[id]` |
 
-A medida que cada app expone sus endpoints admin, el Control Plane los va consumiendo.
 
 ---
 
@@ -94,7 +94,7 @@ A medida que cada app expone sus endpoints admin, el Control Plane los va consum
 ## Decisiones de diseño
 
 - **No DB propia.** La fuente de verdad de cada entidad sigue siendo su app dueña.
-- **Acciones administrativas se derivan, no se duplican.** Si el admin desactiva un comprador, el Control Plane llama a `PUT /api/admin/buyers/{id}` de Buyer App, no toca su DB.
+- **Acciones administrativas se derivan, no se duplican.** Si el admin modifica un comprador, el Control Plane llama a `PATCH /api/buyers/[id]` de Buyer App, no toca su DB.
 
 ---
 
