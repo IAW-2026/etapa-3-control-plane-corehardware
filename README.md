@@ -8,6 +8,22 @@ Panel administrativo centralizado del ecosistema CoreHardware (comisión **CoreH
 
 ---
 
+## Deploy
+
+- Produccion: https://etapa-3-control-plane-corehardware.vercel.app/
+- Testing: https://etapa-3-control-plane-corehardware-git-8a05b4-agusf22s-projects.vercel.app/
+
+---
+
+## Credenciales de prueba
+
+- Usuario: admin+clerk_test@iaw.com
+- Contraseña: iawuser#
+
+Todas las cuentas del resto de apps pertenecen a la misma instancia de Clerk y por lo tanto pueden utilizarse para loguearse en el sitio, sin embargo solo se permitira el acceso a aquellas con rol `admin`.
+
+---
+
 ## Stack
 
 - **Framework:** Next.js 16 (App Router)
